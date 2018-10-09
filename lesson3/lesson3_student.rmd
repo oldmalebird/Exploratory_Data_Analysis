@@ -12,7 +12,8 @@ Notes:
 Notes:
 
 ```{r Pseudo-Facebook User Data}
-
+pf <- read.csv('pseudo_facebook.tsv', sep='\t')
+names(pf)
 ```
 
 ***
@@ -21,8 +22,22 @@ Notes:
 Notes:
 
 ```{r Histogram of Users\' Birthdays}
-install.packages('ggplot2')
+#install.packages('ggplot2')
 library(ggplot2)
+qplot(x = dob_day, data = pf) + scale_x_continuous(breaks=1:31)
+```
+```{r}
+install.packages('ggthemes', dependencies = TRUE) 
+library(ggthemes) 
+```
+```{r}
+library(ggthemes) 
+theme_set(theme_minimal(14)) 
+```
+```{r}
+ggplot(aes(x = dob_day), data = pf) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31)
 ```
 
 ***
@@ -34,8 +49,20 @@ Response:
 
 ### Moira's Investigation
 Notes:
-
+```{r}
+qplot(x = dob_day, data = pf) + 
+  scale_x_continuous(breaks = 1:31) +
+  facet_wrap(~dob_month, ncol = 3)
+```
+等效的ggplot语法：
 ***
+```{r}
+ggplot(data = pf, aes(x = dob_day)) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31) + 
+  facet_wrap(~dob_month)
+
+```
 
 ### Estimating Your Audience Size
 Notes:
@@ -87,7 +114,12 @@ Notes:
 #### What code would you enter to create a histogram of friend counts?
 
 ```{r Friend Count}
-
+qplot(x=friend_count, data=pf)
+```
+等效的ggplot语法：
+```{r}
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram()
 ```
 
 #### How is this plot similar to Moira's first plot?
@@ -99,7 +131,13 @@ Response:
 Notes:
 
 ```{r Limiting the Axes}
-
+qplot(x = friend_count, data = pf, xlim = c(0,1000))
+```
+等效的 ggplot 语法： 
+```{r}
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(0, 1000))
 ```
 
 ### Exploring with Bin Width
