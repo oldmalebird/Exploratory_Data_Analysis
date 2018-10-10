@@ -12,7 +12,7 @@
 注释：
 
 ```{r Pseudo-Facebook User Data}
-
+pf = read.delim('pseudo_facebook.tsv')
 ```
 
 ***
@@ -21,8 +21,10 @@
 注释：
 
 ```{r Histogram of Users\' Birthdays}
-install.packages('ggplot2')
 library(ggplot2)
+ggplot(aes(x = dob_day), data = pf) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31)
 ```
 
 ***
@@ -34,6 +36,9 @@ library(ggplot2)
 
 ### Moira 的调查
 注释：
+```{r}
+
+```
 
 ***
 
@@ -61,7 +66,10 @@ library(ggplot2)
 注释：
 
 ```{r Faceting}
-
+ggplot(data = pf, aes(x = dob_day)) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31) + 
+  facet_wrap(~dob_month)
 ```
 
 #### 我们再观察一下这个图。这里你发现了什么？
@@ -87,7 +95,8 @@ library(ggplot2)
 #### 你会输入哪个代码，创建朋友数量的直方图？
 
 ```{r Friend Count}
-
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram()
 ```
 
 #### 这个图与 Moira 的第一个图有哪些相似的地方？
@@ -99,7 +108,9 @@ library(ggplot2)
 注释：
 
 ```{r Limiting the Axes}
-
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram() + 
+scale_x_continuous(limits = c(0, 1000))
 ```
 
 ### 探究箱宽
@@ -109,6 +120,14 @@ library(ggplot2)
 
 ### 调整箱宽
 注释：
+```{r}
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram(binwidth = 25) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+
+qplot(x = friend_count, data = pf, binwidth = 25) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
 
 ### 拆分好友数
 ```{r Faceting Friend Count}
@@ -116,7 +135,14 @@ library(ggplot2)
 # 将它增加到下列代码中。
 qplot(x = friend_count, data = pf, binwidth = 10) +
   scale_x_continuous(limits = c(0, 1000),
-                     breaks = seq(0, 1000, 50))
+                     breaks = seq(0, 1000, 50)) +
+  facet_grid(. ~ gender) 
+```
+```{r}
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  facet_wrap(~gender)
 ```
 
 ***
@@ -125,7 +151,16 @@ qplot(x = friend_count, data = pf, binwidth = 10) +
 注释：
 
 ```{r Omitting NA Values}
+qplot(x = friend_count, data = subset(pf,!is.na(gender)), binwidth = 10) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(. ~ gender) 
+```
 
+```{r}
+ggplot(aes(x = friend_count), data = subset(pf, !is.na(gender))) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  facet_wrap(~gender)
 ```
 
 ***
