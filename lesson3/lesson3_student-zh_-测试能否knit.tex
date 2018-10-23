@@ -1,0 +1,1612 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\hypertarget{-3-}{%
+\section{第 3 课}\label{-3-}}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{首先做什么？}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{facebook-}{%
+\subsubsection{Facebook 匿名用户数据}\label{facebook-}}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pf =}\StringTok{ }\KeywordTok{read.delim}\NormalTok{(}\StringTok{'pseudo_facebook.tsv'}\NormalTok{)}
+\CommentTok{#视频用的是这个：}
+\CommentTok{#pf <- read.csv('pseudo_facebook.tsv', sep = '\textbackslash{}t')}
+\KeywordTok{names}\NormalTok{(pf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "userid"                "age"                  
+##  [3] "dob_day"               "dob_year"             
+##  [5] "dob_month"             "gender"               
+##  [7] "tenure"                "friend_count"         
+##  [9] "friendships_initiated" "likes"                
+## [11] "likes_received"        "mobile_likes"         
+## [13] "mobile_likes_received" "www_likes"            
+## [15] "www_likes_received"
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{用户生日的直方图}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ dob_day), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \DecValTok{1}\OperatorTok{:}\DecValTok{31}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ dob_day, }\DataTypeTok{data =}\NormalTok{pf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ dob_day, }\DataTypeTok{data =}\NormalTok{pf) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks=}\DecValTok{1}\OperatorTok{:}\DecValTok{31}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\paragraph{在这个直方图中你注意到哪些事情？}
+
+注册帐号时，很多网站会将你的生日默认为1号，甚至1月1号。对于
+Facebook，他们的默认是1月1日。
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{moira-}{%
+\subsubsection{Moira 的调查}\label{moira-}}
+
+注释： 人们感知的读者人数与实际读者人数相差巨大，人们严重低估读者人数。
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{估算关注量}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{-facebook-}{%
+\paragraph{思考一下，你在 Facebook
+发布特定信息或分享图片的时间。什么时间呢？}\label{-facebook-}}
+
+回复：
+
+\paragraph{你认为多少朋友会看到你的发布？}
+
+回复：
+
+\hypertarget{-facebook-}{%
+\paragraph{思考一下，你在 Facebook
+每个月发布信息或进行评论的比例。你认为这个百分比是多少？}\label{-facebook-}}
+
+回复：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{自我感知的关注量}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{拆分}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#只有一个变量时用facet_wrap，两个以上时用facet_grid}
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ dob_day, }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks=} \DecValTok{1}\OperatorTok{:}\DecValTok{31}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{dob_month, }\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ pf, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ dob_day)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \DecValTok{1}\OperatorTok{:}\DecValTok{31}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{dob_month)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\paragraph{我们再观察一下这个图。这里你发现了什么？}
+
+1月1日的值很高
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{保持怀疑态度：离群值和异常情况}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{moira-}{%
+\subsubsection{Moira 的离群值}\label{moira-}}
+
+注释：有人认为有1000万好友 \#\#\#\# 你认为哪些情况适用于 Moira
+的离群值？ bad data about an extreme case
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{好友数}
+
+注释：
+
+\paragraph{你会输入哪个代码，创建朋友数量的直方图？}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =}\NormalTok{ pf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#qplot(x = friend_count, data = pf, xlim = c(0,1000))}
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\hypertarget{-moira-}{%
+\paragraph{这个图与 Moira 的第一个图有哪些相似的地方？}\label{-moira-}}
+
+long tail data
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{限制轴线}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\subsubsection{探究箱宽}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{调整箱宽}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{25}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =}\NormalTok{ pf, }\DataTypeTok{binwidth =} \DecValTok{25}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\subsubsection{拆分好友数}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# 你会输入哪个代码，创建按照性别的直方图平面？}
+\CommentTok{# 将它增加到下列代码中。}
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =}\NormalTok{ pf, }\DataTypeTok{binwidth =} \DecValTok{25}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{),}
+                     \DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_grid}\NormalTok{(. }\OperatorTok{~}\StringTok{ }\NormalTok{gender) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2951 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{省略不适用的数值}
+
+注释：如果用了data = na.omit(pf)，则其他列的空值也被去掉了
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }\DataTypeTok{binwidth =} \DecValTok{10}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(. }\OperatorTok{~}\StringTok{ }\NormalTok{gender) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf, }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender))) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{-}{%
+\subsubsection{`根据' 性别的统计量}\label{-}}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(pf}\OperatorTok{$}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## female   male 
+##  40254  58574
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(pf}\OperatorTok{$}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## female   male 
+##  40254  58574
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count,pf}\OperatorTok{$}\NormalTok{gender, summary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pf$gender: female
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0      37      96     242     244    4923 
+## -------------------------------------------------------- 
+## pf$gender: male
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0      27      74     165     182    4917
+\end{verbatim}
+
+\paragraph{哪些人朋友更多，男性还是女性？}
+
+回复：女性
+
+\paragraph{女性和男性的朋友数量中位数有哪些不同？}
+
+回复：96,74
+
+\paragraph{为什么中位数是比平均数更好的测量方法？}
+
+回复：受极值影响小
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{使用时长}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tenure, }\DataTypeTok{data =}\NormalTok{ pf, }\DataTypeTok{binwidth =} \DecValTok{30}\NormalTok{, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{'black'}\NormalTok{), }\DataTypeTok{fill =} \KeywordTok{I}\NormalTok{(}\StringTok{'#099DD9'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tenure), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{   }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{30}\NormalTok{, }\DataTypeTok{color =} \StringTok{'black'}\NormalTok{, }\DataTypeTok{fill =} \StringTok{'#099DD9'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-20-1.pdf}
+***
+
+\paragraph{你如何按照年份创建任期的直方图？}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tenure}\OperatorTok{/}\DecValTok{365}\NormalTok{), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{   }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \FloatTok{.25}\NormalTok{, }\DataTypeTok{color =} \StringTok{'black'}\NormalTok{, }\DataTypeTok{fill =} \StringTok{'#F79420'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tenure}\OperatorTok{/}\DecValTok{365}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ pf, }\DataTypeTok{binwidth =} \FloatTok{.25}\NormalTok{, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{'black'}\NormalTok{), }\DataTypeTok{fill =} \KeywordTok{I}\NormalTok{(}\StringTok{'#F79420'}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{7}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 26 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{标签图}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tenure}\OperatorTok{/}\DecValTok{365}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ pf, }
+      \DataTypeTok{xlab =} \StringTok{'Number of years using Facebook'}\NormalTok{,}
+      \DataTypeTok{ylab =} \StringTok{'Number of users in sample'}\NormalTok{,}
+      \DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{'black'}\NormalTok{), }\DataTypeTok{fill =} \KeywordTok{I}\NormalTok{(}\StringTok{'#F79420'}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{7}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 26 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{用户年龄}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ age, }\DataTypeTok{data =}\NormalTok{ pf, }\DataTypeTok{binwidth =}\DecValTok{1}\NormalTok{,}
+      \DataTypeTok{xlab =} \StringTok{'Age'}\NormalTok{,}
+      \DataTypeTok{ylab =} \StringTok{'Number of users in sample'}\NormalTok{,}
+      \DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{'black'}\NormalTok{), }\DataTypeTok{fill =} \KeywordTok{I}\NormalTok{(}\StringTok{'#5760AB'}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{113}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ age), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{1}\NormalTok{, }\DataTypeTok{fill =} \StringTok{'#5760AB'}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{113}\NormalTok{, }\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\paragraph{你发现了什么？}
+
+回复：100+
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{表情包的传播}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{lada-}{%
+\subsubsection{Lada 钱包表情包}\label{lada-}}
+
+注释：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{改变数据}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0    31.0    82.0   196.4   206.0  4923.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{log10}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    -Inf   1.491   1.914    -Inf   2.314   3.692
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{log10}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count }\OperatorTok{+}\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.000   1.505   1.919   1.868   2.316   3.692
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.000   5.568   9.055  11.088  14.353  70.164
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(gridExtra)}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =}\NormalTok{ pf)}
+\NormalTok{p2 <-}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{log10}\NormalTok{(friend_count }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{), }\DataTypeTok{data =}\NormalTok{ pf)}
+\NormalTok{p3 <-}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sqrt}\NormalTok{(friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }
+\KeywordTok{grid.arrange}\NormalTok{(p1, p2, p3, }\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_histogram}\NormalTok{()}
+\NormalTok{p2 <-}\StringTok{ }\NormalTok{p1 }\OperatorTok{+}\StringTok{ }\KeywordTok{scale_x_log10}\NormalTok{()}
+\NormalTok{p3 <-}\StringTok{ }\NormalTok{p1 }\OperatorTok{+}\StringTok{ }\KeywordTok{scale_x_sqrt}\NormalTok{()}
+\KeywordTok{grid.arrange}\NormalTok{(p1, p2, p3, }\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous x-axis
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 1962 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-28-1.pdf}
+***
+
+\subsubsection{调整尺寸图层}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{logScale <-}\StringTok{ }\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{log10}\NormalTok{(friend_count), }\DataTypeTok{data =}\NormalTok{ pf)}
+\NormalTok{countScale <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count), }\DataTypeTok{data =}\NormalTok{ pf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
+\KeywordTok{grid.arrange}\NormalTok{(logScale, countScale, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 1962 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous x-axis
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 1962 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{频数多边图}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }\DataTypeTok{binwidth =} \DecValTok{10}\NormalTok{,}
+      \DataTypeTok{geom =} \StringTok{'freqpoly'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 4 rows containing missing values (geom_path).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-30-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{y =}\NormalTok{ ..count..}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(..count..),}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{xlab =} \StringTok{'Friend Count'}\NormalTok{,}
+      \DataTypeTok{ylab =} \StringTok{'Proportion of Users with that friend count'}\NormalTok{,}
+      \DataTypeTok{binwidth =} \DecValTok{10}\NormalTok{,}
+      \DataTypeTok{geom =} \StringTok{'freqpoly'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 4 rows containing missing values (geom_path).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ friend_count, }\DataTypeTok{y =}\NormalTok{ ..count..}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(..count..)), }\DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf, }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_freqpoly}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ gender), }\DataTypeTok{binwidth=}\DecValTok{10}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{50}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'好友数量'}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Percentage of users with that friend count'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 4 rows containing missing values (geom_path).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<a5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<bd>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e5>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8b>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e6>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<95>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<b0>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<e9>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<87>代替了dot
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : 'mbcsToSbcs'里转换'濂藉弸鏁伴噺'出错：<8f>代替了dot
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-32-1.pdf}
+***
+
+\subsubsection{网页上的赞数}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ www_likes, }\DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf, }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)),}
+      \DataTypeTok{geom =} \StringTok{'freqpoly'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Scale for 'x' is already present. Adding another scale for 'x', which
+## will replace the existing scale.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous x-axis
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 60935 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(pf}\OperatorTok{$}\NormalTok{www_likes, pf}\OperatorTok{$}\NormalTok{gender, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pf$gender: female
+## [1] 3507665
+## -------------------------------------------------------- 
+## pf$gender: male
+## [1] 1430175
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{箱线图}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{y =}\NormalTok{ friend_count,}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{geom =} \StringTok{'boxplot'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-35-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{#scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{-0--1000-}{%
+\paragraph{调整代码，关注朋友数量在 0 到 1000
+之间的用户。}\label{-0--1000-}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{y =}\NormalTok{ friend_count,}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{geom =} \StringTok{'boxplot'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_boxplot).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-36-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{y =}\NormalTok{ friend_count,}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{geom =} \StringTok{'boxplot'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 2949 rows containing non-finite values (stat_boxplot).
+\end{verbatim}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-37-1.pdf}
+以上两种方法实际上从计算中删除了数据点，所以更好的方法是使用coord
+Cartesian层来设置y轴，
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{y =}\NormalTok{ friend_count,}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{geom =} \StringTok{'boxplot'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_cartesian}\NormalTok{(}\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{箱线图、分位数和友情}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friend_count, pf}\OperatorTok{$}\NormalTok{gender, summary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pf$gender: female
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0      37      96     242     244    4923 
+## -------------------------------------------------------- 
+## pf$gender: male
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0      27      74     165     182    4917
+\end{verbatim}
+
+\paragraph{一般来说，我们样本中哪些人更容易交朋友，男性还是女性？}
+
+回复：女性 \#\#\#\# 写出可以验证答案的一些方法。 回复：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qplot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{y =}\NormalTok{ friendships_initiated,}
+      \DataTypeTok{data =} \KeywordTok{subset}\NormalTok{(pf,}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)), }
+      \DataTypeTok{geom =} \StringTok{'boxplot'}\NormalTok{, }\DataTypeTok{color =}\NormalTok{ gender) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_cartesian}\NormalTok{(}\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{200}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{lesson3_student-zh_-测试能否knit_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(pf}\OperatorTok{$}\NormalTok{friendships_initiated, pf}\OperatorTok{$}\NormalTok{gender, summary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pf$gender: female
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0    19.0    49.0   113.9   124.8  3654.0 
+## -------------------------------------------------------- 
+## pf$gender: male
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0    15.0    44.0   103.1   111.0  4144.0
+\end{verbatim}
+
+回复：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{得到逻辑}
+
+注释：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_likes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0     0.0     4.0   106.1    46.0 25111.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_likes }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Mode   FALSE    TRUE 
+## logical   35056   63947
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pf}\OperatorTok{$}\NormalTok{mobile_check_in <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{pf}\OperatorTok{$}\NormalTok{mobile_check_in <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_likes }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_check_in)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  1.0000  0.6459  1.0000  1.0000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pf}\OperatorTok{$}\NormalTok{mobile_check_in <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_check_in)}
+\KeywordTok{summary}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_check_in)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     0     1 
+## 35056 63947
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_check_in }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{) }\OperatorTok{/}\StringTok{ }\KeywordTok{length}\NormalTok{(pf}\OperatorTok{$}\NormalTok{mobile_check_in)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6459097
+\end{verbatim}
+
+回复：
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{分析一个变量}
+
+思考：
+
+点击 \textbf{KnitHTML} 查看你的成果和这节课的 html 页面、答案和注释！
+
+
+\end{document}
