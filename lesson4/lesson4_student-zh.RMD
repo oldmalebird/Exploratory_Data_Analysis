@@ -1,6 +1,26 @@
 第 4 课
 ========================================================
 
+```{r}
+
+```
+
+```{r}
+library(ggplot2)
+pf <- data(diamonds)
+names(pf)
+head(diamonds)
+
+```
+
+```{r}
+data(DATA_SET_NAME) 
+```
+
+```{r}
+?diamonds
+```
+
 ***
 
 ### 散点图和自我感知的关注量
