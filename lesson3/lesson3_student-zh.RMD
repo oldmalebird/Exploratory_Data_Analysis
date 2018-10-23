@@ -1,3 +1,12 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r GlobalOptions}
+options(knitr.duplicate.label = 'allow')
+```
 第 3 课
 ========================================================
 
@@ -151,7 +160,9 @@ scale_x_continuous(limits = c(0, 1000))
 ggplot(aes(x = friend_count), data = pf) + 
   geom_histogram(binwidth = 25) + 
   scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
 
+```{r}
 qplot(x = friend_count, data = pf, binwidth = 25) + 
   scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
 ```
@@ -344,7 +355,7 @@ qplot(x = friend_count, y = ..count../sum(..count..),
 ```
 
 
-```
+```{r}
 ggplot(aes(x = friend_count, y = ..count../sum(..count..)), data = subset(pf, !is.na(gender))) +
   geom_freqpoly(aes(color = gender), binwidth=10) + 
   scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
@@ -357,7 +368,7 @@ ggplot(aes(x = friend_count, y = ..count../sum(..count..)), data = subset(pf, !i
 注释：
 
 ```{r Likes on the Web}
-qplot(x = wWw_likes, data = subset(pf, !is.na(gender)),
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
       geom = 'freqpoly', color = gender) +
   scale_x_continuous() + 
   scale_x_log10()
@@ -374,13 +385,33 @@ by(pf$www_likes, pf$gender, sum)
 注释：
 
 ```{r Box Plots}
-
+qplot(x = gender, y = friend_count,
+      data = subset(pf,!is.na(gender)), 
+      geom = 'boxplot', color = gender) 
+  #scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
 ```
 
 #### 调整代码，关注朋友数量在 0 到 1000 之间的用户。
 
 ```{r}
+qplot(x = gender, y = friend_count,
+      data = subset(pf,!is.na(gender)), 
+      geom = 'boxplot', color = gender) +
+  scale_y_continuous(limits = c(0, 1000))
+```
 
+```{r}
+qplot(x = gender, y = friend_count,
+      data = subset(pf,!is.na(gender)), 
+      geom = 'boxplot', color = gender, ylim = c(0, 1000))
+```
+以上两种方法实际上从计算中删除了数据点，所以更好的方法是使用coord Cartesian层来设置y轴，
+
+```{r}
+qplot(x = gender, y = friend_count,
+      data = subset(pf,!is.na(gender)), 
+      geom = 'boxplot', color = gender) +
+  coord_cartesian(ylim = c(0, 1000))
 ```
 
 ***
@@ -389,14 +420,19 @@ by(pf$www_likes, pf$gender, sum)
 注释：
 
 ```{r Box Plots, Quartiles, and Friendships}
-
+by(pf$friend_count, pf$gender, summary)
 ```
 
 #### 一般来说，我们样本中哪些人更容易交朋友，男性还是女性？
-回复：
+回复：女性
 #### 写出可以验证答案的一些方法。
 回复：
 ```{r Friend Requests by Gender}
+qplot(x = gender, y = friendships_initiated,
+      data = subset(pf,!is.na(gender)), 
+      geom = 'boxplot', color = gender) +
+  coord_cartesian(ylim = c(0,200))
+by(pf$friendships_initiated, pf$gender, summary)
 
 ```
 
@@ -408,7 +444,14 @@ by(pf$www_likes, pf$gender, sum)
 注释：
 
 ```{r Getting Logical}
-
+summary(pf$mobile_likes)
+summary(pf$mobile_likes > 0)
+pf$mobile_check_in <- NA
+pf$mobile_check_in <- ifelse(pf$mobile_likes > 0, 1, 0)
+summary(pf$mobile_check_in)
+pf$mobile_check_in <- factor(pf$mobile_check_in)
+summary(pf$mobile_check_in)
+sum(pf$mobile_check_in == 1) / length(pf$mobile_check_in)
 ```
 
 回复：
@@ -418,7 +461,5 @@ by(pf$www_likes, pf$gender, sum)
 ### 分析一个变量
 思考：
 
-***
 
-点击 **KnitHTML** 查看你的成果和这节课的 html 页面、
-答案和注释！
+点击 **KnitHTML** 查看你的成果和这节课的 html 页面、答案和注释！
