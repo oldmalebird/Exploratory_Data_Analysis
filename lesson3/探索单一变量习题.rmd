@@ -2,32 +2,26 @@
 title: "探索单一变量"
 output: html_notebook
 ---
+
+中文没有乱码
 ```{r}
-install.packages('gridExtra') 
-library(gridExtra) 
+library(ggplot2)
 ```
 
 ```{r}
-install.packages("swirl") 
-library(swirl) 
+#data()
+#?diamonds
+summary(diamonds)
+```
+钻石价格直方图
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 500)
 ```
 
 ```{r}
-install.packages('knitr', dependencies = T)
-library(knitr)
-```
-
-
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
-```{r}
-plot(cars)
+diamonds[diamonds$price<5000,]
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
