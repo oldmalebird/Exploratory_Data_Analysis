@@ -20,7 +20,20 @@ ggplot(aes(x = price), data = diamonds) +
 ```
 
 ```{r}
-diamonds[diamonds$price<5000,]
+diamonds[diamonds$price < 5000,]
+```
+
+```{r}
+summary(mtcars)
+```
+
+```{r}
+mtcars[mtcars$mpg>23,]
+```
+
+```{r}
+efficient <- subset(diamonds, price < 500)
+efficient
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.

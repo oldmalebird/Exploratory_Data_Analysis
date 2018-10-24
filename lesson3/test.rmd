@@ -1,0 +1,40 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(ggplot2)
+summary(diamonds)
+```
+
+钻石价格直方图
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 500)
+```
+
+
+```{r}
+diamonds[diamonds$price >= 15000,]
+```
+
+Explore the largest peak in the price histogram you created earlier.
+
+Try limiting the x-axis, altering the bin width, and setting different breaks on the x-axis.
+
+You can save images by using the ggsave() command.
+ggsave() will save the last plot created.
+For example...
+                  qplot(x = price, data = diamonds)
+                  ggsave('priceHistogram.png')
+
+ggsave currently recognises the extensions eps/ps, tex (pictex), pdf, jpeg, tiff, png, bmp, svg and wmf (windows only).
+
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 500)
+```
+
+
+

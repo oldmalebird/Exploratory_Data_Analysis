@@ -1,0 +1,21 @@
+---
+title: "test"
+output: html_document
+---
+
+
+```{r}
+library(ggplot2)
+summary(diamonds)
+```
+
+钻石价格直方图
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 500)
+```
+
+
+```{r}
+diamonds[diamonds$price < 5000,]
+```
