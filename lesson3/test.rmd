@@ -8,10 +8,10 @@ library(ggplot2)
 summary(diamonds)
 ```
 
-钻石价格直方图
+#### 钻石价格直方图
 ```{r}
 ggplot(aes(x = price), data = diamonds) + 
-  geom_histogram(binwidth = 500)
+  geom_histogram(binwidth = 200)
 ```
 
 
@@ -20,7 +20,6 @@ diamonds[diamonds$price >= 15000,]
 ```
 
 Explore the largest peak in the price histogram you created earlier.
-
 Try limiting the x-axis, altering the bin width, and setting different breaks on the x-axis.
 
 You can save images by using the ggsave() command.
@@ -33,8 +32,143 @@ ggsave currently recognises the extensions eps/ps, tex (pictex), pdf, jpeg, tiff
 
 ```{r}
 ggplot(aes(x = price), data = diamonds) + 
-  geom_histogram(binwidth = 500)
+  geom_histogram(binwidth = 50) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+ggsave('priceHistogram.png')
 ```
+#### 切工-价格直方图
+
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 100) + 
+  scale_x_continuous(breaks = seq(0, 1000, 100)) +
+  facet_wrap(~cut)
+```
+
+```{r}
+table(diamonds$cut)
+by(diamonds$price, diamonds$cut, summary)
+```
+#### 标尺和多直方图
+http://www.cookbook-r.com/Graphs/Facets_(ggplot2)/
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 100) + 
+  scale_x_continuous(breaks = seq(0, 1000, 100)) +
+  facet_wrap(~cut, scales="free_y")
+```
+#### 由切工决定的每克拉价格
+提示 1：你可以在参数 x 中使用价格和克拉变量。什么表达式可使你得到每克拉价格？ 
+提示 2：对于长尾分布，你可以添加一个 ggplot 图层（如：scale_x_log10()）来转换变量。
+```{r}
+library(gridExtra) 
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram() + 
+  facet_wrap(~cut, scales="free_y") +
+  scale_x_log10()
+  
+```
+#### 价格箱线图
+在箱线图中，我们将 y 参数作为连续数据，将 x 参数作为分类数据。
+
+```{r}
+ggplot(aes(y = price), data = diamonds) + 
+  geom_boxplot() + 
+  facet_wrap(~cut, scales="free_y") +
+  coord_cartesian()
+
+```
+#### 四分位数间距 — IQR
+```{r}
+IQR(subset(diamonds, price <1000)$price) 
+```
+
+```{r}
+IQR(subset(diamonds, color =='D')$price)
+```
+```{r}
+IQR(subset(diamonds, color =='J')$price)
+```
+
+
+```{r}
+by(diamonds$price, diamonds$color, summary)
+```
+
+#### 由颜色表示的每克拉价格箱线图
+```{r}
+ggplot(aes(y = price/carat), data = diamonds) + 
+  geom_boxplot(aes(color = color)) 
+```
+
+#### 克拉频率多边形
+对于这个问题，我们寻找的是精确值的计数 — 尝试从较大的组宽开始，接着减小组宽，以查看图形是如何变化的，然后关注你最感兴趣的值。
+```{r}
+ggplot(aes(x = carat), data = diamonds) + 
+  geom_freqpoly(binwidth=0.1) +
+  scale_x_continuous(breaks = seq(0, 5, 0.5)) +
+  scale_y_continuous(breaks = seq(0,10000,2000))
+  
+
+```
+#### Gapminder 数据
+
+The Gapminder website contains over 500 data sets with information about
+the world's population. Your task is to download a data set of your choice
+and create 2-5 plots that make use of the techniques from Lesson 3.
+
+You might use a simple histogram, a boxplot split over a categorical variable,
+or a frequency polygon. The choice is yours!
+
+You can find a link to the Gapminder website in the Instructor Notes.
+
+Once you've completed your investigation, create a post in the discussions that includes:
+      1. any questions you answered, your observations, and summary statistics
+      2. snippets of code that created the plots
+      3. links to the images of your plots
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,39 +1,41 @@
 第 4 课
 ========================================================
 
-```{r}
-
-```
-
-```{r}
-library(ggplot2)
-pf <- data(diamonds)
-names(pf)
-head(diamonds)
-
-```
-
-```{r}
-data(DATA_SET_NAME) 
-```
-
-```{r}
-?diamonds
-```
-
 ***
 
 ### 散点图和自我感知的关注量
 注释：
+```{r}
+library(ggplot2)
+pf = read.delim('pseudo_facebook.tsv')
+#视频用的是这个：
+#pf <- read.csv('pseudo_facebook.tsv', sep = '\t')
+names(pf)
+```
 
 ***
 
 ### 散点图
-注释：
+注释：qplot(age, friend_count, data = pf) 也可以
 
-```{r Scatterplots}
-
+```{r}
+qplot(x = age, y = friend_count, data = pf)
 ```
+```{r}
+summary(pf$age)
+```
+
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_point()
+```
+
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_point() +
+  xlim(13,90)
+```
+
 
 ***
 
@@ -46,7 +48,9 @@ data(DATA_SET_NAME)
 注释：
 
 ```{r ggplot Syntax}
-
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_point(alpha = 1/20) +
+  xlim(13,90)
 ```
 
 ***
@@ -54,8 +58,10 @@ data(DATA_SET_NAME)
 ### 过度绘制
 注释：
 
-```{r Overplotting}
-
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_jitter(alpha = 1/20) +
+  xlim(13,90)
 ```
 
 #### 你在这个绘图中注意到了什么？
@@ -65,10 +71,15 @@ data(DATA_SET_NAME)
 
 ### Coord_trans()
 注释：
+不能用geom_jitter了
 
-```{r Coord_trans()}
-
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_point(alpha = 1/20) +
+  xlim(13,90) +
+  coord_trans(y = 'sqrt')
 ```
+
 
 #### 查阅 coord_trans() 的文档，在绘图中增加一层，使用平方根函数改变 friend_count。创建你的绘图！
 
@@ -83,8 +94,43 @@ data(DATA_SET_NAME)
 ### Alpha 和抖动
 注释：
 
-```{r Alpha and Jitter}
 
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+  geom_point(alpha = 1/20, position = position_jitter(h=0)) +
+  xlim(13,90) +
+  coord_trans(y = 'sqrt')
+```
+```{r}
+summary(pf$friend_count)
+```
+```{r}
+?coord_trans
+```
+
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  geom_point() +
+  xlim(13,90)
+
+```
+
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  geom_point(alpha = 1/20, position = position_jitter(h=0)) +
+  xlim(13,90) 
+```
+
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  geom_point(alpha = 1/20, position = 'jitter') +
+  xlim(13,90) 
+```
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  geom_point(alpha = 1/20, position = position_jitter(h=0)) +
+  xlim(13,90) +
+  coord_trans(y = 'sqrt')
 ```
 
 ***
