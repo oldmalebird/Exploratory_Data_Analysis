@@ -73,18 +73,14 @@ ggplot(aes(x = age, y = friend_count), data = pf) +
 注释：
 不能用geom_jitter了
 
+
+#### 查阅 coord_trans() 的文档，在绘图中增加一层，使用平方根函数改变 friend_count。创建你的绘图！
+
 ```{r}
 ggplot(aes(x = age, y = friend_count), data = pf) + 
   geom_point(alpha = 1/20) +
   xlim(13,90) +
   coord_trans(y = 'sqrt')
-```
-
-
-#### 查阅 coord_trans() 的文档，在绘图中增加一层，使用平方根函数改变 friend_count。创建你的绘图！
-
-```{r}
-
 ```
 
 #### 你发现了什么？
@@ -143,25 +139,70 @@ ggplot(aes(x = age, y = friendships_initiated), data = pf) +
 ### 条件平均数
 注释：
 
-```{r Conditional Means}
-
+```{r}
+library(dplyr)
+age_group <- group_by(pf, age)
+pf.fc_by_age <- summarise(age_group, 
+          friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n = n())
+pf.fc_by_age <- arrange(pf.fc_by_age,age)
+head(pf.fc_by_age)
+```
+另一种方法：
+```{r}
+pf.fc_by_age_2  <- pf %>%
+  group_by(age) %>%
+  summarise(friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n = n()) %>%
+  arrange(age)
+head(pf.fc_by_age_2)
 ```
 
-创建你的绘图！
 
-```{r Conditional Means Plot}
+创建你的绘图: Conditional Means Plot
 
+```{r}
+ggplot(aes(age, friend_count_mean), data = pf.fc_by_age) +
+  geom_line()
 ```
 
 ***
 
-### 将摘要与原始数据叠加
+### 将摘要与原始数据叠加 Overlaying Summaries with Raw Data
 注释：
 
-```{r Overlaying Summaries with Raw Data}
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  geom_point(alpha = 1/20, position = position_jitter(h=0),
+             color = 'orange') +
+  xlim(13,90) +
+  coord_trans(y = 'sqrt') +
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.1), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.9), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.5), color = 'blue')
 
 ```
 
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) + 
+  coord_cartesian(xlim = c(13,70), ylim = c(0,1000)) +
+  geom_point(alpha = 1/20, position = position_jitter(h=0),
+             color = 'orange') +
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.1), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.9), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, 
+            fun.args = list(probs =0.5), color = 'blue')
+
+```
 #### 你在这个绘图中发现了什么？
 回复：
 
@@ -174,11 +215,12 @@ ggplot(aes(x = age, y = friendships_initiated), data = pf) +
 
 ***
 
-### 相关性
+### 相关性 Correlation
 注释：
 
-```{r Correlation}
-
+```{r}
+cor.test(pf$age, pf$friend_count, method = 'pearson')
+with(pf, cor.test(age, friend_count, method = 'pearson'))
 ```
 
 查看函数 cor.test 的文档。
@@ -331,3 +373,5 @@ b. 两个变量的实际相关性是什么？
 
 点击 **KnitHTML** 查看你的成果和这节课的 html 页面、
 答案和注释！
+
+
