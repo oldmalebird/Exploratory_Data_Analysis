@@ -230,11 +230,11 @@ with(pf, cor.test(age, friend_count, method = 'pearson'))
 
 ***
 
-### 数据集的相关性
-注释：
+### 数据集的相关性 Correlation on Subsets
+注释：default method: pearson
 
-```{r Correlation on Subsets}
-with(                 , cor.test(age, friend_count))
+```{r}
+with(subset(pf, age <= 70), cor.test(age, friend_count))
 ```
 
 ***
@@ -248,7 +248,8 @@ with(                 , cor.test(age, friend_count))
 注释：
 
 ```{r}
-
+ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
+  geom_point()
 ```
 
 ***
@@ -257,13 +258,17 @@ with(                 , cor.test(age, friend_count))
 注释：
 
 ```{r Strong Correlations}
-
+ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
+  geom_point() +
+  xlim(0, quantile(pf$www_likes, 0.95)) +
+  ylim(0, quantile(pf$www_likes_received, 0.95)) +
+  geom_smooth(method = 'lm', color = 'red')
 ```
 
-两个变量之间的相关性是什么？计算时包含变量的前 5% 数值，四舍五入到小数点后三位。
+两个变量之间的相关性是什么？计算时包含变量的前 5% 数值，四舍五入到小数点后三位。 Correlation Calcuation
 
-```{r Correlation Calcuation}
-
+```{r}
+cor.test(pf$www_likes_received, pf$likes_received)
 ```
 
 回复：
@@ -275,39 +280,50 @@ with(                 , cor.test(age, friend_count))
 
 ***
 
-### 相关性的更多注意事项
+### 相关性的更多注意事项 More Caution With Correlation
 注释：
 
-```{r More Caution With Correlation}
+```{r}
 install.packages('alr3')
 library(alr3)
 ```
+```{r}
+data(Mitchell)
+?Mitchell
+```
 
-创建你的绘图！
+创建你的绘图！ Temp vs Month
 
-```{r Temp vs Month}
-
+```{r}
+ggplot(data = Mitchell, aes(x = Month, y = Temp)) +
+  geom_point()
+qplot(data = Mitchell, Month, Temp)
 ```
 
 ***
 
-### 噪音散点图
+### 噪音散点图 Noisy Scatterplots
 a. 猜猜散点图的相关系数。
 
 b. 两个变量的实际相关性是什么？
 (四舍五入到千分位)
 
-```{r Noisy Scatterplots}
-
+```{r}
+cor.test(Mitchell$Month, Mitchell$Temp)
 ```
 
 ***
 
 ### 理解数据
 注释：
+```{r}
+range(Mitchell$Month)
+```
 
 ```{r Making Sense of Data}
-
+ggplot(data = Mitchell, aes(x = Month, y = Temp)) +
+  geom_point() +
+  scale_x_continuous(breaks = seq(0, 203, 12))
 ```
 
 ***
@@ -319,14 +335,25 @@ b. 两个变量的实际相关性是什么？
 
 观看解答视频，核对 Instructor Notes！
 注释：
+```{r Making Sense of Data}
+ggplot(data = Mitchell, aes(x = Month%%12, y = Temp)) +
+  geom_point() 
+```
+```{r}
+x <- seq(0, 4*pi, pi/20)
+y <- cos(x)
+qplot(x = x, y = y)
+#dcor.ttest(x, y)
+```
 
 ***
 
-### 理解噪音：年龄到含有月份的年龄
+### 理解噪音：年龄到含有月份的年龄 Understanding Noise: Age to Age Months
 注释：
 
-```{r Understanding Noise: Age to Age Months}
-
+```{r}
+ggplot(aes(x = age, y = friend_count_mean), data = pf.fc_by_age) +
+  geom_line()
 ```
 
 ***
