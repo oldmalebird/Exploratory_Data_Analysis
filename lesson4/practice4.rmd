@@ -1,0 +1,171 @@
+---
+title: "prictice 4"
+output: html_notebook
+---
+
+
+```{r}
+library(ggplot2)
+summary(diamonds)
+```
+Your first task is to create a scatterplot of price vs x.
+using the ggplot syntax.
+
+```{r}
+ggplot(data = diamonds, aes(x = price, y = x)) +
+  geom_point()
+```
+
+```{r}
+cor.test(diamonds$price, diamonds$x)
+cor.test(diamonds$price, diamonds$y)
+cor.test(diamonds$price, diamonds$z)
+```
+
+Create a simple scatter plot of price vs depth.
+```{r}
+ggplot(data = diamonds, aes(x = price, y = depth)) +
+  geom_point()
+```
+
+Change the code to make the transparency of the points to be 1/100 of what they are now and mark the x-axis every 2 units. See the instructor notes for two hints.
+提示 1：在 geom_point() 中，使用 alpha 参数调整点的透明度。 
+提示 2：使用带有 breaks 参数的 scale_x_continuous() 调整 x 轴。
+```{r}
+range(diamonds$price)
+```
+
+
+```{r}
+ggplot(data = diamonds, aes(x = price, y = depth)) +
+  geom_point(alpha = 1/100) +
+  scale_x_continuous(breaks = seq(0, 19000,2))
+```                  
+```{r}
+cor.test(diamonds$price, diamonds$depth)
+```
+Create a scatterplot of price vs carat and omit the top 1% of price and carat values.
+```{r}
+ggplot(data = diamonds, aes(x = price, y = carat)) +
+  geom_point(alpha = 1/100) 
+```
+
+
+```{r}
+ggplot(data = diamonds, aes(x = price, y = carat)) +
+  geom_point(alpha = 1/100) +
+  xlim(0, quantile(diamonds$price, 0.99)) +
+  ylim(0, quantile(diamonds$carat, 0.99))
+```
+
+Create a scatterplot of price vs. volume (x * y * z).
+This is a very rough approximation for a diamond's volume.
+
+Create a new variable for volume in the diamonds data frame.
+This will be useful in a later exercise.
+
+Don't make any adjustments to the plot just yet.
+
+```{r}
+ggplot(data = diamonds, aes(x = price, y = x * y * z)) +
+  geom_point()
+```
+
+提示 1：向钻石数据框中添加一个体积变量很有帮助。你应该排除体积大于或等于 800 的钻石。而且，还要排除体积为 0 的钻石。当你子集化原始数据框时，在两个条件之间使用 & 符号。 
+
+提示 2：在这些条件下子集化钻石数据框，并且将它保存到另一个变量中。在 cor() 函数中使用该数据框。
+
+```{r}
+diamonds$volume <- diamonds$x * diamonds$y * diamonds$z
+volume_group <- subset(diamonds, volume < 800 & volume > 0)
+cor.test(volume_group$price,volume_group$volume)
+```
+Adjust the transparency of the points and add a linear model to the plot. (See the Instructor Notes or look up the documentation of
+geom_smooth() for more details about smoothers.)
+
+We encourage you to think about this next question and to post your thoughts in the discussion section.
+
+Do you think this would be a useful model to estimate the price of diamonds? Why or why not?
+
+```{r}
+ggplot(aes(x = price, y = volume), data = volume_group ) +
+  geom_point(alpha = 1/100) +
+  geom_smooth(method = 'lm', color = 'red')
+```
+
+Use the function dplyr package to create a new data frame containing info on diamonds by clarity.
+
+Name the data frame diamondsByClarity
+
+The data frame should contain the following
+variables in this order.
+
+      (1) mean_price
+      (2) median_price
+      (3) min_price
+      (4) max_price
+      (5) n
+
+where n is the number of diamonds in each level of clarity.
+
+```{r}
+suppressMessages(library(dplyr))
+diamonds_by_clarity <- group_by(diamonds, clarity)
+diamondsByClarity <- summarise(diamonds_by_clarity, 
+          mean_price = mean(price),
+          median_price = median(price),
+          min_price = min(price),
+          max_price = max(price),
+          n = n())
+diamondsByClarity <- arrange(diamondsByClarity, clarity)
+```
+
+We’ve created summary data frames with the mean price by clarity and color. You can run the code in R to verify what data is in the variables diamonds_mp_by_clarity and diamonds_mp_by_color.
+
+Your task is to write additional code to create two bar plots on one output image using the grid.arrange() function from the package gridExtra.
+
+```{r}
+diamonds_by_clarity <- group_by(diamonds, clarity)
+diamonds_mp_by_clarity <- summarise(diamonds_by_clarity, mean_price = mean(price))
+
+diamonds_by_color <- group_by(diamonds, color)
+diamonds_mp_by_color <- summarise(diamonds_by_color, mean_price = mean(price))
+```
+
+```{r}
+library(gridExtra)
+p1 <- ggplot(diamonds_mp_by_clarity,aes(clarity, mean_price)) +
+  geom_col()
+
+p2 <- ggplot(diamonds_mp_by_color,aes(color, mean_price)) +
+  geom_col()
+grid.arrange(p2, p1, ncol = 1)
+```
+
+
+
+
+```{r}
+head(diamonds_mp_by_clarity)
+head(diamonds_mp_by_color)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

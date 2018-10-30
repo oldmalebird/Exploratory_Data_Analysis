@@ -11,20 +11,34 @@
 
 ***
 
-### 第三个定性变量
+### 第三个定性变量 Third Qualitative Variable
 注释：
 
-```{r Third Qualitative Variable}
+```{r}
+library(ggplot2)
+pf = read.delim('pseudo_facebook.tsv')
 ggplot(aes(x = gender, y = age),
-       data = subset(pf, !is.na(gender))) + geom_histogram()
+       data = subset(pf, !is.na(gender))) +
+  geom_boxplot() +
+  stat_summary(fun.y = mean, geom = 'point', shape = 4)
+```
+```{r}
+ggplot(aes(x = age, y = friend_count),
+       data = subset(pf, !is.na(gender))) +
+  geom_line(aes(color = gender), stat = 'summary', fun.y = median)
+```
+```{r}
+suppressMessages(library(dplyr))
+
+
 ```
 
 ***
 
-### 绘制条件总结
+### 绘制条件总结 Plotting Conditional Summaries
 注释：
 
-```{r Plotting Conditional Summaries}
+```{r}
 
 ```
 

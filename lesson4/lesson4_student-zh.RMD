@@ -44,10 +44,10 @@ ggplot(aes(x = age, y = friend_count), data = pf) +
 
 ***
 
-### ggplot 语法
+### ggplot 语法 ggplot Syntax
 注释：
 
-```{r ggplot Syntax}
+```{r}
 ggplot(aes(x = age, y = friend_count), data = pf) + 
   geom_point(alpha = 1/20) +
   xlim(13,90)
@@ -254,10 +254,10 @@ ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
 
 ***
 
-### 强相关
+### 强相关 Strong Correlations
 注释：
 
-```{r Strong Correlations}
+```{r}
 ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
   geom_point() +
   xlim(0, quantile(pf$www_likes, 0.95)) +
@@ -284,8 +284,7 @@ cor.test(pf$www_likes_received, pf$likes_received)
 注释：
 
 ```{r}
-install.packages('alr3')
-library(alr3)
+#library(alr3)
 ```
 ```{r}
 data(Mitchell)
@@ -314,13 +313,13 @@ cor.test(Mitchell$Month, Mitchell$Temp)
 
 ***
 
-### 理解数据
+### 理解数据 Making Sense of Data
 注释：
 ```{r}
 range(Mitchell$Month)
 ```
 
-```{r Making Sense of Data}
+```{r}
 ggplot(data = Mitchell, aes(x = Month, y = Temp)) +
   geom_point() +
   scale_x_continuous(breaks = seq(0, 203, 12))
@@ -335,7 +334,7 @@ ggplot(data = Mitchell, aes(x = Month, y = Temp)) +
 
 观看解答视频，核对 Instructor Notes！
 注释：
-```{r Making Sense of Data}
+```{r}
 ggplot(data = Mitchell, aes(x = Month%%12, y = Temp)) +
   geom_point() 
 ```
@@ -355,37 +354,104 @@ qplot(x = x, y = y)
 ggplot(aes(x = age, y = friend_count_mean), data = pf.fc_by_age) +
   geom_line()
 ```
-
-***
-
-### 含有月份平均数的年龄
-
-```{r Age with Months Means}
-
-```
-
-编程任务
-```{r Programming Assignment}
-
+```{r}
+head(pf.fc_by_age)
+pf.fc_by_age[17:19,]
 ```
 
 ***
 
-### 条件平均数的噪音
+### 含有月份平均数的年龄 Age with Months Means
 
-```{r Noise in Conditional Means}
+```{r}
+pf$age_with_months <- pf$age +(12 - pf$dob_month) / 12
+```
+Two alternate solutions: 
+pf$age_with_months <- pf$age + (1 - pf$dob_month / 12) 
+pf$age_with_months <- with(pf, age + (1 - dob_month / 12))
+
+编程任务 Programming Assignment
+```{r}
+suppressMessages(library(dplyr))
+pf.fc_by_age_months <- pf %>%
+  group_by(age_with_months) %>%
+  summarise(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n()) %>%
+  arrange(age_with_months)
+head(pf.fc_by_age_months)
+
+```
+
+```{r}
+age_with_months_groups <- group_by(pf, age_with_months)
+pf.fc_by_age_months2 <- summarise(age_with_months_groups,
+                                  friend_count_mean = mean(friend_count),
+                                  friend_count_median = median(friend_count),
+                                  n = n())
+pf.fc_by_age_months2 <- arrange(pf.fc_by_age_months2, age_with_months)
+head(pf.fc_by_age_months2)
+```
+
+***
+
+### 条件平均数的噪音 Noise in Conditional Means
+
+```{r}
+ggplot(aes(x = age_with_months, y = friend_count_mean), 
+       data = subset(pf.fc_by_age_months, age_with_months < 71)) +
+  geom_line()
 
 ```
 
 ***
 
-### 使条件平均数更加流畅
+### 使条件平均数更加流畅 Smoothing Conditional Means
 注释：
 
-```{r Smoothing Conditional Means}
+```{r}
+p1 <- ggplot(aes(x = age, y = friend_count_mean), 
+             data = subset(pf.fc_by_age, age < 71)) +
+  geom_line()
 
+p2 <- ggplot(aes(x = age_with_months, y = friend_count_mean), 
+       data = subset(pf.fc_by_age_months, age_with_months < 71)) +
+  geom_line()
+
+p3 <- ggplot(aes(x = round(age / 5) * 5, y = friend_count),
+             data = subset(pf, age < 71)) + 
+  geom_line(stat = 'summary', fun.y = mean)
+
+p4 <- ggplot(aes(x = round(age / 5) * 5, y = friend_count_mean),
+             data = subset(pf.fc_by_age, age < 71)) + 
+  geom_line()
+
+library(gridExtra)
+grid.arrange(p2, p1,p3,p4, ncol = 1)
 ```
 
+```{r}
+p1 <- ggplot(aes(x = age, y = friend_count_mean), 
+             data = subset(pf.fc_by_age, age < 71)) +
+  geom_line() +
+  geom_smooth()
+
+p2 <- ggplot(aes(x = age_with_months, y = friend_count_mean), 
+       data = subset(pf.fc_by_age_months, age_with_months < 71)) +
+  geom_line() +
+  geom_smooth()
+
+p3 <- ggplot(aes(x = round(age / 5) * 5, y = friend_count),
+             data = subset(pf, age < 71)) + 
+  geom_line(stat = 'summary', fun.y = mean)
+
+p4 <- ggplot(aes(x = round(age / 5) * 5, y = friend_count_mean),
+             data = subset(pf.fc_by_age, age < 71)) + 
+  geom_line()
+
+library(gridExtra)
+grid.arrange(p2, p1,p3,p4, ncol = 1)
+```
 ***
 
 ### 选择哪个绘图？
