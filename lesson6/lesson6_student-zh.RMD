@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
 第 6 课
 ========================================================
 
@@ -5,17 +10,48 @@
 注释：
 
 ***
+```{r}
+library(ggplot2)
+data("diamonds")
+```
+### 散点图回顾 Scatterplot Review
+Let's start by examining two variables in the data set.
+The scatterplot is a powerful tool to help you understand the relationship between two continuous variables.
 
-### 散点图回顾
+We can quickly see if the relationship is linear or not.
+In this case, we can use a variety of diamond characteristics to help us figure out whether the price advertised for any given diamond is 
+reasonable or a rip-off.
 
-```{r Scatterplot Review}
+Let's consider the price of a diamond and it's carat weight.
+Create a scatterplot of price (y) vs carat weight (x).
 
+Limit the x-axis and y-axis to omit the top 1% of values.
+```{r}
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point() +
+  xlim(0, quantile(diamonds$carat, 0.99)) +
+  ylim(0, quantile(diamonds$price, 0.99))
+```
+```{r}
+qplot(x = carat, y = price, data = diamonds) +
+  geom_point(fill = '#F79420', color = 'black', shape = 21) +
+  #geom_point(fill = I('#F79420'), color = I('black'), shape = 21) +也可
+  xlim(0, quantile(diamonds$carat, 0.99)) +
+  ylim(0, quantile(diamonds$price, 0.99)) 
+  
 ```
 
 ***
 
 ### 价格与克拉的关系
 回复：
+```{r}
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(color = '#F79420', alpha = 1/10) +
+  stat_smooth(method = 'lm') +
+  xlim(0, quantile(diamonds$carat, 0.99)) +
+  ylim(0, quantile(diamonds$price, 0.99))
+```
 
 ***
 
@@ -31,22 +67,19 @@
 
 ***
 
-### ggpairs 函数
+### ggpairs 函数 ggpairs Function
 注释：
-
-```{r ggpairs Function}
-# 如有需要，安装下列组件
+如有需要，安装下列组件
 install.packages('GGally')
 install.packages('scales')
 install.packages('memisc')
 install.packages('lattice')
 install.packages('MASS')
 install.packages('car')
-install.packages('reshape')
-install.packages('plyr')
+install.packages('reshape2')
 
+```{r}
 # 加载 ggplot 图画组件及其他内容
-library(ggplot2)
 library(GGally)
 library(scales)
 library(memisc)
@@ -54,7 +87,17 @@ library(memisc)
 # 数据集中 10,000 个钻石的样本
 set.seed(20022012)
 diamond_samp <- diamonds[sample(1:length(diamonds$price), 10000), ]
-ggpairs(diamond_samp, params = c(shape = I('.'), outlier.shape = I('.')))
+ggpairs(diamond_samp, 
+        lower = list(continuous = wrap("points", shape = I('.'))), 
+        upper = list(combo = wrap("box", outlier.shape = I('.'))))
+
+```
+
+```{r}
+ggpairs(diamond_samp, 
+        lower = list(continuous = wrap("points", shape = I('.'))), 
+        upper = list(combo = wrap("box", outlier.shape = I('.'))),
+        axisLabels ='internal')
 ```
 
 在 ggpairs 输出中你发现了什么？
@@ -62,10 +105,28 @@ ggpairs(diamond_samp, params = c(shape = I('.'), outlier.shape = I('.')))
 
 ***
 
-### 钻石的需求
+### 钻石的需求 The Demand of Diamonds
 注释：
+Create two histograms of the price variable and place them side by side on one output image.
 
-```{r The Demand of Diamonds}
+The first plot should be a histogram of price and the second plot should transform the price variable using log10.
+
+Set appropriate bin widths for each plot.
+ggtitle() will add a title to each histogram. 
+
+```{r}
+library(gridExtra)
+
+p1 <- qplot(data = diamonds, x = price, binwidth = 100, 
+               fill = I('#099DD9')) + 
+  ggtitle('Price')
+
+p2 <- qplot(data = diamonds, x = price, binwidth = 0.01, 
+               fill = I('#F79420')) +
+  scale_x_log10()
+  ggtitle('Price (log10)')
+  
+grid.arrange(p1, p2, ncol=2)
 
 ```
 
@@ -76,16 +137,22 @@ ggpairs(diamond_samp, params = c(shape = I('.'), outlier.shape = I('.')))
 
 ***
 
-### 改变散点图
+### 改变散点图 Scatterplot Transformation
 
-```{r Scatterplot Transformation}
-
+```{r}
+qplot(x = carat, y = price, data = diamonds) +
+  geom_point(fill = '#F79420', color = 'black', shape = 21) +
+  #geom_point(fill = I('#F79420'), color = I('black'), shape = 21) +也可
+  scale_y_log10() + 
+  ggtitle('Price (log10) by Carat')
+  #xlim(0, quantile(diamonds$carat, 0.99)) +
+  #ylim(0, quantile(diamonds$price, 0.99)) 
 ```
 
 
-### 创建一个新函数，改变变量 carat
+### 创建一个新函数，改变变量 carat cuberoot transformation
 
-```{r cuberoot transformation}
+```{r}
 cuberoot_trans = function() trans_new('cuberoot', transform = function(x) x^(1/3),
                                       inverse = function(x) x^3)
 ```
@@ -104,15 +171,16 @@ ggplot(aes(carat, price), data = diamonds) +
 ***
 
 ### 再次访问过度绘制
-
-```{r Sort and Head Tables}
-
+ Sort and Head Tables
+```{r}
+head(sort(table(diamonds$carat), decreasing = T))
+head(sort(table(diamonds$price), decreasing = T))
 ```
 
-
-```{r Overplotting Revisited}
+ Overplotting Revisited
+```{r}
 ggplot(aes(carat, price), data = diamonds) + 
-  geom_point() + 
+  geom_point(alpha = 1/5, size = 0.75, position = 'jitter') + 
   scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
                      breaks = c(0.2, 0.5, 1, 2, 3)) + 
   scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
@@ -127,23 +195,21 @@ ggplot(aes(carat, price), data = diamonds) +
 
 ***
 
-### 价格 vs. 克拉与净度
+### 价格 vs. 克拉与净度 Price vs. Carat and Clarity
 
 改变下列代码。
-```{r Price vs. Carat and Clarity}
+```{r}
 # 安装并加载 RColorBrewer 组件
-install.packages('RColorBrewer')
 library(RColorBrewer)
-
-ggplot(aes(x = carat, y = price), data = diamonds) + 
+ggplot(aes(x = carat, y = price, color = clarity), data = diamonds) + 
   geom_point(alpha = 0.5, size = 1, position = 'jitter') +
   scale_color_brewer(type = 'div',
     guide = guide_legend(title = 'Clarity', reverse = T,
-    override.aes = list(alpha = 1, size = 2))) +  
+                         override.aes = list(alpha = 1, size = 2))) + 
   scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
-    breaks = c(0.2, 0.5, 1, 2, 3)) + 
+                     breaks = c(0.2, 0.5, 1, 2, 3)) + 
   scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
-    breaks = c(350, 1000, 5000, 10000, 15000)) +
+                     breaks = c(350, 1000, 5000, 10000, 15000)) +
   ggtitle('Price (log10) by Cube-Root of Carat and Clarity')
 ```
 
@@ -154,20 +220,20 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
 
 ***
 
-### 价格 vs. 克拉与切工
+### 价格 vs. 克拉与切工Price vs. Carat and Cut
 
 改变下列代码。
-```{r Price vs. Carat and Cut}
-ggplot(aes(x = carat, y = price, color = clarity), data = diamonds) + 
+```{r}
+ggplot(aes(x = carat, y = price, color = cut), data = diamonds) + 
   geom_point(alpha = 0.5, size = 1, position = 'jitter') +
   scale_color_brewer(type = 'div',
-                     guide = guide_legend(title = 'Clarity', reverse = T,
+                     guide = guide_legend(title = 'cut', reverse = T,
                                           override.aes = list(alpha = 1, size = 2))) +  
   scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
                      breaks = c(0.2, 0.5, 1, 2, 3)) + 
   scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
                      breaks = c(350, 1000, 5000, 10000, 15000)) +
-  ggtitle('Price (log10) by Cube-Root of Carat and Clarity')
+  ggtitle('Price (log10) by Cube-Root of Carat and cut')
 ```
 
 ***
@@ -177,20 +243,20 @@ ggplot(aes(x = carat, y = price, color = clarity), data = diamonds) +
 
 ***
 
-### 价格 vs. 克拉与颜色
+### 价格 vs. 克拉与颜色 Price vs. Carat and Color
 
 改变下列代码。
-```{r Price vs. Carat and Color}
-ggplot(aes(x = carat, y = price, color = cut), data = diamonds) + 
+```{r}
+ggplot(aes(x = carat, y = price, color = color), data = diamonds) + 
   geom_point(alpha = 0.5, size = 1, position = 'jitter') +
   scale_color_brewer(type = 'div',
-                     guide = guide_legend(title = Cut, reverse = T,
+                     guide = guide_legend(title = 'color', #去掉reverse = T,
                                           override.aes = list(alpha = 1, size = 2))) +  
   scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
                      breaks = c(0.2, 0.5, 1, 2, 3)) + 
   scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
                      breaks = c(350, 1000, 5000, 10000, 15000)) +
-  ggtitle('Price (log10) by Cube-Root of Carat and Cut')
+  ggtitle('Price (log10) by Cube-Root of Carat and color')
 ```
 
 ***
@@ -207,10 +273,10 @@ ggplot(aes(x = carat, y = price, color = cut), data = diamonds) +
 
 ***
 
-### 构建线性模型
+### 构建线性模型 Building the Linear Model
 Notes:
 
-```{r Building the Linear Model}
+```{r}
 m1 <- lm(I(log(price)) ~ I(carat^(1/3)), data = diamonds)
 m2 <- update(m1, ~ . + carat)
 m3 <- update(m2, ~ . + cut)
@@ -235,10 +301,9 @@ Research:
 
 ***
 
-### 更大更优的数据集
+### 更大更优的数据集 A Bigger, Better Data Set
 Notes:
 
-```{r A Bigger, Better Data Set}
 install.package('bitops')
 install.packages('RCurl')
 library('bitops')
@@ -246,16 +311,38 @@ library('RCurl')
 
 diamondsurl = getBinaryURL("https://raw.github.com/solomonm/diamonds-data/master/BigDiamonds.Rda")
 load(rawConnection(diamondsurl))
-```
+
 
 这里可以获取得到数据所使用的代码：
 https://github.com/solomonm/diamonds-data
 
-## 使用更大的钻石数据集构建模型
-Notes:
+## 使用更大的钻石数据集构建模型 Building a Model Using the Big Diamonds Data Set
+Your task is to build five linear models like Solomon did for the diamonds data set only this time you'll use a sample of diamonds from the diamondsbig data set.
 
-```{r Building a Model Using the Big Diamonds Data Set}
+Be sure to make use of the same variables (logprice, carat, etc.) and model 
+names (m1, m2, m3, m4, m5).
 
+To get the diamondsbig data into RStudio on your machine, copy, paste, and run the 
+code in the Instructor Notes. There's 598,024 diamonds in this data set!
+
+Since the data set is so large, you are going to use a sample of the 
+data set to compute the models. You can use the entire data set on your machine which 
+will produce slightly different coefficients and statistics for the models.
+
+
+```{r }
+load("BigDiamonds.rda")
+```
+```{r}
+diamondsbig$logprice = log(diamondsbig$price)
+m1 <- lm(logprice ~ I(carat^(1/3)),
+         data = diamondsbig[diamondsbig$price < 10000 &
+                              diamondsbig$cert == 'GIA',])
+m2 <- update(m1, ~ . + carat)
+m3 <- update(m2, ~ . + cut)
+m4 <- update(m3, ~ . + color)
+m5 <- update(m4, ~ . + clarity)
+mtable(m1, m2, m3, m4, m5)
 ```
 
 ***
@@ -264,13 +351,33 @@ Notes:
 
 BlueNile 钻石例子：
 直径为 1.00 等级很好 I VS I 的钻石价格是 $5,601
+```{r}
+head(diamondsbig)
+```
+
 
 ```{r}
 # 确保你已经加载了 memisc 库，保存为 m5 作为工作区的对象。
 thisDiamond = data.frame(carat = 1.00, cut = "V.Good",
                          color = "I", clarity="VS1")
+
+```
+```{r}
 modelEstimate = predict(m5, newdata = thisDiamond,
                         interval="prediction", level = .95)
+exp(modelEstimate)
+```
+
+```{r}
+dat = data.frame(m4$model, m4$residuals) 
+
+with(dat, sd(m4.residuals)) 
+
+with(subset(dat, carat > .9 & carat < 1.1), sd(m4.residuals)) 
+
+dat$resid <- as.numeric(dat$m4.residuals)
+ggplot(aes(y = resid, x = round(carat, 2)), data = dat) + 
+  geom_line(stat = "summary", fun.y = sd) 
 ```
 
 评估模型如何较好地预测 BlueNile 钻石价格。思考最佳点估计和 95% 的置信区间。
