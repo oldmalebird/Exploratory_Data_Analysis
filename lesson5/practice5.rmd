@@ -1,0 +1,222 @@
+---
+title: "practice5"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data("diamonds")
+library(ggplot2)
+```
+### 带有分面和颜色的价格直方图
+```{r}
+ggplot(aes(x = price), data = diamonds) + 
+  geom_histogram(binwidth = 200, aes(color = cut)) +
+  #scale_fill_brewer(type = 'qual', palette = 1) +
+  facet_wrap(~color) 
+```
+
+```{r}
+ggplot(aes(x = price, fill = cut), data = diamonds) + 
+  #geom_histogram(binwidth = 500) + 如果用了binwidth，在加Scale_x_log10()有问题
+  geom_histogram(bins = 40) +
+  scale_fill_brewer(type = 'qual') +
+  scale_x_log10() +
+  facet_wrap(~color) 
+```
+```{r}
+ggplot(aes(x = price, fill = cut), data = diamonds)+
+  geom_histogram(bins = 35, position = position_stack(reverse = TRUE)) +
+  scale_x_log10() +
+  facet_wrap(~color, ncol = 3) +
+  scale_fill_brewer(type ='qual')
+```
+
+### 价格与按切工填色的表格
+Create a scatterplot of diamond price vs.table and color the points by the cut of
+ the diamond.
+
+
+
+```{r}
+ggplot(aes(x=table,y=price),data=diamonds)+ #不用aes(x=table,y=price,fill=cut)，点无fill
+  geom_point(aes(color=cut))+
+  scale_color_brewer(type = 'qual')+
+  scale_x_continuous(breaks=seq(50,80,2), lim=c(50,80))
+```
+### 价格与体积和钻石净度
+Create a scatterplot of diamond price vs.volume (x * y * z) 
+and color the points by the clarity of diamonds. 
+Use scale on the y-axis to take the log10 of price. 
+You should also omit the top 1% of diamond volumes from the plot.
+
+Note: Volume is a very rough approximation of
+a diamond's actual volume.
+
+
+```{r}
+diamonds$volume <- diamonds$x * diamonds$y * diamonds$z
+ggplot(aes(x = volume, y = price, color = clarity), data = diamonds) +
+  geom_point() +
+  xlim(0, quantile(diamonds$volume, 0.99)) +
+  #ylim(quantile(diamondsprice,0),quantile(diamondsprice, .99)) +
+  scale_color_brewer(type = 'div', direction = -1)
+```
+
+```{r}
+diamonds$volume <- diamonds$x * diamonds$y * diamonds$z
+ggplot(aes(x = volume, y = price, color = clarity), data = diamonds) +
+  geom_point() + 
+  xlim(0, quantile(diamonds$volume, 0.99)) +
+  scale_y_log10() +
+  scale_color_brewer(type = 'div', direction = -1)
+```
+
+```{r}
+diamonds$volume <- diamonds$x * diamonds$y * diamonds$z
+ggplot(aes(x = volume, y = price, color = clarity), data = diamonds) +
+  geom_point(position = position_stack(reverse = TRUE)) + #用直方图改图例顺序的方法不行
+  xlim(0, quantile(diamonds$volume, 0.99)) +
+  scale_y_log10() +
+  scale_color_brewer(type = 'div', direction = -1)
+```
+
+```{r}
+diamonds$clarity <- factor(diamonds$clarity, levels=rev(levels(diamonds$clarity)))
+ggplot(aes(x = volume, y = price, color = clarity), 
+       data = subset(diamonds, volume >0)) +
+  geom_point() + 
+  xlim(0, quantile(diamonds$volume, 0.99)) +
+  ylim(0, quantile(diamonds$price, 0.99)) +
+  scale_y_log10() +
+  coord_cartesian(xlim =c(0,300))+ #你将可视化绘制再纸上之后，将纸裁剪成你要的大小。
+  scale_color_brewer(type = 'div', direction = -1)
+```
+### 新建友谊的比例
+Many interesting variables are derived from two or more others.
+For example, we might wonder how much of a person's network on a service like Facebook the user actively initiated. 
+Two users with the same degree (or number of friends) might be very different if one initiated most of those connections on the service, while the other initiated very few. 
+So it could be useful to consider this proportion of existing friendships that
+the user initiated. 
+This might be a good predictor of how active a user is compared with their peers, or other traits, such as personality (i.e., is this person an extrovert?).
+```{r}
+pf = read.delim('pseudo_facebook.tsv')
+pf$prop_initiated <- pf$friendships_initiated/pf$friend_count
+```
+
+下面这个应该也行
+```{r}
+pf$prop_initiated<- ifelse(pf$friend_count>0, pf$friendships_initiated/pf$friend_count,NA)
+```
+### prop_initiated 与使用时长
+Create a line graph of the median proportion of friendships initiated ('prop_initiated') vs. tenure and color the line segment by year_joined.bucket.
+
+Recall, we created year_joined.bucket in Lesson 5 by first creating year_joined from the variable tenure.
+Then, we used the cut function on year_joined to create four bins or cohorts of users.
+
+(2004, 2009]
+(2009, 2011]
+(2011, 2012]
+(2012, 2014]
+
+The plot should look something like this.
+http://i.imgur.com/vNjPtDh.jpg
+OR this
+http://i.imgur.com/IBN1ufQ.jpg
+```{r}
+pf$year_joined <- floor(2014 - pf$tenure/365)
+summary(pf$year_joined)
+table(pf$year_joined)
+```
+
+```{r}
+pf$year_joined.bucket <- cut(pf$year_joined, 
+                             c(2004, 2009, 2011, 2012, 2014))
+table(pf$year_joined.bucket)
+```
+
+```{r}
+ggplot(aes(x = tenure, y = prop_initiated),
+       data = subset(pf, tenure >= 1)) +
+  geom_line(aes(color = year_joined.bucket))
+```
+
+```{r}
+
+ggplot(pf, aes(x=tenure, y=prop_initiated, color=year_joined.bucket)) +
+    geom_line(stat='summary', fun.y=median, na.rm=TRUE)
+```
+###平滑化 prop_initiated 与使用时长
+Smooth the last plot you created of of prop_initiated vs tenure colored by
+year_joined.bucket. 
+You can bin together ranges of tenure or add a smoother to the plot.
+
+There won't be a solution image for this exercise.
+You will answer some questions about your plot in the next two exercises.
+
+### 最大的 prop_initiated 组
+平均来说，哪个组发起的 Facebook 好友请求比例最大？你在上个练习中创建的带平滑器的图可以帮你回答这个问题。 
+○ 在 2009 年之前加入的人 
+○ 在 2009 年至 2011 年之间加入的人
+○ 在 2011 年至 2012 年之间加入的人 
+○ 在 2012 后加入的人
+```{r}
+with(subset(pf, year_joined.bucket == '(2012,2014]'), summary(prop_initiated))
+```
+### 经过分组、分面和填色的价格/克拉
+Create a scatter plot of the price/carat ratio of diamonds. 
+The variable x should be assigned to cut. 
+The points should be colored by diamond color, and the plot should be faceted by clarity.
+
+The plot should look something like this.
+http://i.imgur.com/YzbWkHT.jpg.
+
+Note:  
+In the link, a color palette of type 'div' was used to color the histogram using
+scale_color_brewer(type = 'div')
+```{r}
+ggplot(aes(x = cut, y = price/carat), data = diamonds) +
+  geom_point(aes(color=color)) +
+  geom_jitter(aes(color=color)) +
+  facet_wrap(~clarity) +
+  scale_color_brewer(type = 'div')
+
+```
+
+```{r}
+#diamonds$clarity <- factor(diamonds$clarity, levels=rev(levels(diamonds$clarity)))
+#diamonds$cut <- factor(diamonds$cut, levels=rev(levels(diamonds$cut)))
+ggplot(aes(x = cut, y = price/carat), data = diamonds) +
+  geom_point(aes(color=color)) +
+  geom_jitter(aes(color=color)) +
+  facet_wrap(~clarity) +
+  scale_color_brewer(type = 'div')
+```
+### Gapminder 多变量分析
+The Gapminder website contains over 500 data sets with information about
+the world's population. Your task is to continue the investigation you did at the
+end of Problem Set 4 or you can start fresh and choose a different
+data set from Gapminder.
+
+If you’re feeling adventurous or want to try some data munging see if you can
+find a data set or scrape one from the web.
+
+In your investigation, examine 3 or more variables and create 2-5 plots that make
+use of the techniques from Lesson 5.
+
+You can find a link to the Gapminder website in the Instructor Notes.
+
+Once you've completed your investigation, create a post in the discussions that includes:
+      1. the variable(s) you investigated, your observations, and any summary statistics
+      2. snippets of code that created the plots
+      3. links to the images of your plots
+```{r}
+
+```
+
+

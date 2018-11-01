@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
 第 5 课
 ========================================================
 
@@ -76,7 +81,7 @@ head(pf.fc_by_age_gender.wide)
 
 我们还可以使用 dplyr 和 tidyr 包创建相似的数据框：
 ```{r}
-libraray(tidyr)
+library(tidyr)
 pf.fc_by_age_gender.wide <- subset(pf.fc_by_age_gender[c('age', 'gender', 'median_friend_count')],!is.na(gender)) %>% 
     spread(gender, median_friend_count) %>% 
     mutate(ratio = male / female) 
@@ -280,7 +285,7 @@ summary(yo$all.purchases)
 ```
 略繁琐的替代方案
 ```{r}
-yo$all.purchases <- yo$trawberry + yo$blueberry + yo$pina.colada + yo$plain + yo$mixed.berry
+yo$all.purchases <- yo$strawberry + yo$blueberry + yo$pina.colada + yo$plain + yo$mixed.berry
 ```
 
 
@@ -308,12 +313,19 @@ ggplot(aes(x = time, y = price), data = yo) +
 ### 观察家庭的样本 Looking at Sample of Households
 
 ```{r}
+set.seed(4230)
+sample.ids <- sample(levels(yo$id), 16)
 
+ggplot(aes(x = time, y = price),
+       data = subset(yo, id %in% sample.ids)) +
+  facet_wrap( ~ id) +
+  geom_line() +
+  geom_point(aes(size = all.purchases), pch = 1)
 ```
 
 ***
 
-### 交叉分组数据的缺点
+### 交叉分组数据的缺点 截面数据的限制
 注释：
 
 ***
@@ -325,6 +337,19 @@ ggplot(aes(x = time, y = price), data = yo) +
 
 ### 散点图矩阵
 注释：
+你可能还会发现：变量标签是在散点图矩阵的外边缘上，而非对角线上。如果你希望标签在对角线上，你可以在 ggpairs 命令中设置 axisLabels = 'internal' 参数。
+
+Scatterplots are below the diagonal, and categorical variables, like gender, create faceted histograms.
+```{r}
+library(GGally)
+#theme_set(theme_minimal(20))
+
+set.seed(1836)
+pf_subset <- pf[, c(2:15)]
+names(pf_subset)
+ggpairs(pf_subset[sample.int(nrow(pf_subset), 1000), ])
+
+```
 
 ***
 

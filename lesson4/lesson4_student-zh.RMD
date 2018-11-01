@@ -284,11 +284,9 @@ cor.test(pf$www_likes_received, pf$likes_received)
 注释：
 
 ```{r}
-#library(alr3)
-```
-```{r}
+library(alr3)
 data(Mitchell)
-?Mitchell
+??Mitchell
 ```
 
 创建你的绘图！ Temp vs Month
