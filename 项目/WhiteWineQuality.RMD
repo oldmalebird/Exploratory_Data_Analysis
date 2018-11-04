@@ -19,14 +19,99 @@ whitewine <- read.csv('wineQualityWhites.csv')
 
 # 单变量绘图选择
 ```{r echo=FALSE, Univariate_Plots}
+str(whitewine)
+```
+
+```{r echo=FALSE, Univariate_Plots}
+summary(whitewine)
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(fixed.acidity), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(volatile.acidity), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(citric.acid), data = whitewine) +
+  geom_histogram()
+```
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(alcohol), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(residual.sugar), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(chlorides), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(free.sulfur.dioxide), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(total.sulfur.dioxide), data = whitewine) +
+  geom_histogram()
+```
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(sulphates), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(density), data = whitewine) +
+  geom_histogram()
+```
+
+
+
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(alcohol), data = whitewine) +
+  geom_histogram()
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
 
 ```
 
 # 单变量分析
 
 ### 你的数据集结构是什么？
+13个变量，4898个观察值。
 
 ### 你的数据集内感兴趣的主要特性有哪些？
+影响白葡萄酒品质的理化因素有哪些，是否可以通过一种白葡萄酒的理化指标来预测该酒的品质
 
 ### 你认为数据集内哪些其他特征可以帮助你探索兴趣特点？
 
