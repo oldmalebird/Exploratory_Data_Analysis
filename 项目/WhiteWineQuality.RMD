@@ -28,36 +28,41 @@ summary(whitewine)
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(fixed.acidity), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(volatile.acidity), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(citric.acid), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 ```{r echo=FALSE, Univariate_Plots}
-ggplot(aes(alcohol), data = whitewine) +
-  geom_histogram()
+ggplot(aes(pH), data = whitewine) +
+  geom_histogram(bins = 30)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(residual.sugar), data = whitewine) +
   geom_histogram()
 ```
+```{r echo=FALSE, Univariate_Plots}
+ggplot(aes(residual.sugar), data = whitewine) +
+  geom_histogram() +
+  scale_x_log10()
+```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(chlorides), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 100)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(free.sulfur.dioxide), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
@@ -66,12 +71,12 @@ ggplot(aes(total.sulfur.dioxide), data = whitewine) +
 ```
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(sulphates), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
 ggplot(aes(density), data = whitewine) +
-  geom_histogram()
+  geom_histogram(bins = 50)
 ```
 
 
@@ -82,47 +87,52 @@ ggplot(aes(alcohol), data = whitewine) +
 ```
 
 ```{r echo=FALSE, Univariate_Plots}
-
 ```
 
-```{r echo=FALSE, Univariate_Plots}
-
-```
-
-```{r echo=FALSE, Univariate_Plots}
-
-```
-
-```{r echo=FALSE, Univariate_Plots}
-
-```
-
-```{r echo=FALSE, Univariate_Plots}
-
-```
-
-```{r echo=FALSE, Univariate_Plots}
-
-```
 
 # 单变量分析
 
 ### 你的数据集结构是什么？
-13个变量，4898个观察值。
+数据集包含13个变量，4898个观察值。
+
 
 ### 你的数据集内感兴趣的主要特性有哪些？
-影响白葡萄酒品质的理化因素有哪些，是否可以通过一种白葡萄酒的理化指标来预测该酒的品质
+感兴趣的主要特征有白葡萄酒的酸度、二氧化硫含量和品质，是否可以通过一些白葡萄酒的理化指标来预测该酒的品质。
 
 ### 你认为数据集内哪些其他特征可以帮助你探索兴趣特点？
+猜测挥发性酸度、柠檬酸、残糖、游离二氧化硫、总二氧化硫、pH会影响白葡萄酒的品质。
 
 ### 根据数据集内已有变量，你是否创建了任何新变量？
+没有。
 
 ### 在已经探究的特性中，是否存在任何异常分布？你是否对数据进行一些操作，如清洁、调整或改变数据的形式？如果是，你为什么会这样做？
+残糖直方图向右倾斜，于是对x轴进行了log10处理，处理后呈现双峰。
 
 
 
 # 双变量绘图选择
 ```{r echo=FALSE, Bivariate_Plots}
+
+```
+
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+```
+
+```{r echo=FALSE, Univariate_Plots}
 
 ```
 
