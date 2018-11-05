@@ -1,0 +1,460 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+红葡萄酒品质分析
+========================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# 加载你最终使用的所有组件
+# 在这个代码块的分析中。
+
+# 注意，在这个代码块中，将参数 "echo" 设为假。
+# This prevents the code from displaying in the knitted HTML output.这可以避免代码混入 HTML 输出显示。
+# 应当在文件中，对所有代码块设为 echo=FALSE 。
+
+library(ggplot2)
+library(gridExtra)
+library(GGally)
+library(knitr)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Load_the_Data}
+# 加载数据
+redwine <- read.csv('wineQualityreds.csv')
+```
+
+# 单变量绘图选择
+```{r echo=FALSE}
+str(redwine)
+```
+
+```{r echo=FALSE}
+summary(redwine)
+```
+
+```{r echo=FALSE}
+#redwine$quality <- factor(redwine$quality, ordered = T)
+table(redwine$quality)
+```
+
+```{r echo=FALSE}
+ggplot(aes(quality), data = redwine) +
+  geom_histogram(binwidth = 0.5)
+```
+
+葡萄酒质量评分介于3-8之间，主要分布在5-7，基本为正态分布。
+
+## 酸度
+```{r echo=FALSE}
+ggplot(aes(fixed.acidity), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+```{r echo=FALSE}
+ggplot(aes(fixed.acidity), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+```{r echo=FALSE}
+ggplot(aes(volatile.acidity), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+```{r echo=FALSE}
+ggplot(aes(citric.acid), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+
+```{r echo=FALSE}
+table(redwine$citric.acid)
+```
+
+柠檬酸有很多0值
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(citric.acid), data = redwine) +
+  geom_histogram(bins = 30) +
+  xlim(0, quantile(redwine$citric.acid, 0.99)) +
+  scale_x_sqrt()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(pH), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+大部分红葡萄酒的pH在3.0-3.6之间
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(residual.sugar), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+残糖量向右倾斜，以log10转换坐标轴。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(residual.sugar), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(chlorides), data = redwine) +
+  geom_histogram(bins = 30) +
+  xlim(0, quantile(redwine$chlorides, 0.98))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(free.sulfur.dioxide), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+游离二氧化硫向右倾斜，以log10转换坐标轴。
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(free.sulfur.dioxide), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(total.sulfur.dioxide), data = redwine) +
+  geom_histogram()
+```
+
+总二氧化硫向右倾斜，以log10转换坐标轴。
+```{r echo=FALSE}
+ggplot(aes(total.sulfur.dioxide), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+```{r echo=FALSE}
+ggplot(aes(sulphates), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+```{r echo=FALSE}
+ggplot(aes(sulphates), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+```{r echo=FALSE}
+ggplot(aes(density), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+
+```{r echo=FALSE}
+ggplot(aes(alcohol), data = redwine) +
+  geom_histogram(bins = 30)
+```
+
+酒精度向右倾斜，以log10转换坐标轴。
+```{r echo=FALSE}
+ggplot(aes(alcohol), data = redwine) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+```
+
+
+
+# 单变量分析
+
+### 你的数据集结构是什么？
+数据集包含1599个观察值，13个变量。其中，变量x起索引作用，其余变量除品质分数为整型外，均为浮点型。
+
+
+### 你的数据集内感兴趣的主要特性有哪些？
+感兴趣的主要特征有红葡萄酒的品质、酸度和二氧化硫含量，是否可以通过一些红葡萄酒的理化指标来预测该酒的品质。
+
+### 你认为数据集内哪些其他特征可以帮助你探索兴趣特点？
+猜测挥发性酸度、柠檬酸、残糖、游离二氧化硫、总二氧化硫、pH、酒精度会影响红葡萄酒的品质。
+
+### 根据数据集内已有变量，你是否创建了任何新变量？
+没有。
+
+### 在已经探究的特性中，是否存在任何异常分布？你是否对数据进行一些操作，如清洁、调整或改变数据的形式？如果是，你为什么会这样做？
+不挥发酸、残糖量、游离二氧化硫、总二氧化硫、硫酸盐、酒精度等变量向右倾斜，分别对坐标轴取log10后，不挥发酸和总二氧化硫基本呈正态分布，游离二氧化硫呈双峰分布，其他变量依然向右倾斜。
+
+
+
+# 双变量绘图选择
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1000)
+redwine_subset <- redwine[c(2:13)]
+ggpairs(redwine_subset[sample.int(nrow(redwine_subset), 1000), ])
+#ggsave('散点矩阵图.png')
+```
+
+由上图可看出：
+- 酒精度、硫酸盐含量、挥发性酸、柠檬酸、总二氧化硫与红葡萄酒质量有相关性。
+- 密度与酒精度有相关性。
+- 柠檬酸与pH有相关性。
+- 密度、pH、柠檬酸与不挥发酸有相关性。
+
+
+```{r echo=FALSE}
+redwine$quality <- factor(redwine$quality, ordered = T)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = quality, y = volatile.acidity)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0, quantile(redwine$volatile.acidity, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4)
+```
+
+挥发性有机酸含量越低，红葡萄酒的品质越高。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = quality, y = citric.acid)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0.001, quantile(redwine$citric.acid, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4)
+```
+
+柠檬酸含量越高，红葡萄酒的品质越高。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = quality, y = total.sulfur.dioxide)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0.99, quantile(redwine$total.sulfur.dioxide, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4)
+```
+
+红葡萄酒品质随总二氧化硫的升高先升高后降低，可能需要配和其他变量才能对红葡萄酒的品质有相关性。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = quality, y = sulphates)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0, quantile(redwine$sulphates, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4)
+```
+
+硫酸盐含量约高，红葡萄酒品质越高。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = quality, y = alcohol)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(8, quantile(redwine$alcohol, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4)
+```
+
+酒精度越高，红葡萄酒的质量越高。
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = density, y = alcohol)) +
+  geom_point( alpha = 0.2, color = 'orange') +
+  xlim(0.99, quantile(redwine$density, 0.95)) +
+  ylim(5, quantile(redwine$alcohol, 0.95)) +
+  geom_smooth(method = 'lm')
+
+```
+
+               
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = fixed.acidity, y = pH)) +
+  geom_jitter(alpha = 0.2, color = 'orange') +
+  ylim(2.5, quantile(redwine$pH, 0.99)) +
+  #scale_x_log10() +
+  geom_smooth(method = 'lm')
+```
+             
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = fixed.acidity, y = citric.acid)) +
+  geom_jitter(alpha = 0.2, color = 'orange') +
+  ylim(0, quantile(redwine$citric.acid, 0.99)) +
+  #scale_x_log10() +
+  geom_smooth(method = 'lm')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data=redwine, aes(x = fixed.acidity, y = density)) +
+  geom_jitter(alpha = 0.2, color = 'orange') +
+  ylim(0.99, quantile(redwine$density, 0.99)) +
+  #scale_x_log10() +
+  geom_smooth(method = 'lm')
+```
+
+# 双变量分析
+
+### 探讨你在这部分探究中观察到的一些关系。这些感兴趣的特性与数据集内其他特性有什么区别？
+- 酒精度与红葡萄酒品质呈正相关
+- 挥发性酸与红葡萄酒品质呈负相关
+- 柠檬酸与红葡萄酒品质呈正相关
+- 硫酸盐含量与红葡萄酒品质呈正相关
+这些感兴趣的特性与其他变量相比，都与主要特性——红葡萄酒的品质呈现相关性。
+
+### 你是否观察到主要特性与其他特性之间的有趣关系？
+- 密度与酒精度呈负相关
+- 不挥发酸与柠檬酸、密度呈正相关
+- 不挥发酸与pH呈负相关
+
+### 你发现最强的关系是什么？
+最强的关系是酒精度与红葡萄酒品质的正相关性，二者的相关系数达0.463。
+
+
+
+# 多变量绘图选择
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = alcohol, y = density, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10() +
+  geom_smooth(method = 'lm', se=FALSE) 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = volatile.acidity, y = citric.acid, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  ylim(0, quantile(redwine$citric.acid, 0.99)) +
+  scale_y_sqrt() +
+  geom_smooth(method = 'lm', se=FALSE) +
+  facet_wrap( ~ quality)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = pH, y = citric.acid, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  ylim(0, quantile(redwine$citric.acid, 0.99)) +
+  scale_y_sqrt() +
+  geom_smooth(method = 'lm', se=FALSE) +
+  facet_wrap( ~ quality)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = total.sulfur.dioxide, y = sulphates, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  ylim(0, quantile(redwine$sulphates, 0.99)) +
+  scale_y_log10() +
+  geom_smooth(method = 'lm', se=FALSE) +
+  facet_wrap( ~ quality)
+```
+
+
+# 多变量分析
+
+###  探讨你在这部分探究中观察到的一些关系。通过观察感兴趣的特性，是否存在相互促进的特性？
+酒精度、挥发性酸、柠檬酸、硫酸盐这4个变量与红葡萄酒品质的相关性均低于0.5，没有发现存在相互促进的特性。
+
+### 这些特性之间是否存在有趣或惊人的联系呢？
+硫酸盐和总二氧化硫无相关性，而我预期这两者呈正相关。
+柠檬酸带来的风味可以给红葡萄酒加分，挥发性酸中的乙酸会带来刺鼻的醋味给葡萄酒减分。而柠檬酸和挥发性酸呈现负相关，是不是存在一种影响因素可以在降低挥发性酸的同时增加柠檬酸？
+
+### 选项：你是否创建过数据集的任何模型？讨论你模型的优缺点。
+
+------
+
+# 定稿图与总结
+
+### 绘图一
+```{r echo=FALSE, message=FALSE, warning=FALSE, Plot_One}
+p1 <- ggplot(data=redwine, aes(x = quality, y = alcohol)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(8, quantile(redwine$alcohol, 0.99)) +
+  scale_y_log10() +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4) +
+  labs(y = 'alcohol (% by volume)', title = 'Alcohol(log10) by Quality')
+
+p2 <- ggplot(data=redwine, aes(x = quality, y = volatile.acidity)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0, quantile(redwine$volatile.acidity, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4) +
+  labs(y = 'volatile acidity (g / dm^3)', title = 'Volatile acidity by Quality')
+
+p3 <- ggplot(data=redwine, aes(x = quality, y = citric.acid)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0.001, quantile(redwine$citric.acid, 0.99)) +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4) +
+  labs(y = 'citric acid (g / dm^3)', title = 'Citric acid by Quality')
+
+p4 <- ggplot(data=redwine, aes(x = quality, y = sulphates)) +
+  geom_jitter( alpha = 0.2, color = 'orange') +
+  geom_boxplot(alpha = 0.2) +
+  ylim(0.3, quantile(redwine$sulphates, 0.99)) +
+  scale_y_log10() +
+  stat_summary(fun.y = "mean", 
+               geom = "point",
+               shape = 4) +
+  labs(y = 'sulphates (g / dm^3)', title = 'Sulphates(log10) by Quality')
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+
+### 描述一
+- 酒精度(log10)与红葡萄酒品质呈正相关
+- 挥发性酸与红葡萄酒品质呈负相关
+- 柠檬酸与红葡萄酒品质呈正相关
+- 硫酸盐(log10)含量与红葡萄酒品质呈正相关
+
+### 绘图二
+```{r echo=FALSE, Plot_Two}
+ggplot(aes(x = alcohol, y = density, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10() +
+  geom_smooth(method = 'lm', se=FALSE) +
+  labs(x = 'alcohol (% by volume)',
+       y = 'density (g/cm^3)',
+       title = 'Density by Quality')
+```
+
+### 描述二
+
+对于每一种评分，密度均与酒精度呈负相关。
+
+### 绘图三
+```{r echo=FALSE, message=FALSE, warning=FALSE, Plot_Three}
+ggplot(aes(x = volatile.acidity, y = citric.acid, color = quality),
+       data = redwine) +
+  geom_point(alpha = 0.2) +
+  ylim(0, quantile(redwine$citric.acid, 0.99)) +
+  scale_y_sqrt() +
+  geom_smooth(method = 'lm', se=FALSE) +
+  facet_wrap( ~ quality) +
+  labs(x = 'volatile acidity (acetic acid - g / dm^3)',
+       y = 'citric acid (g / dm^3)',
+       title = 'Citric Acid(sqrt) by Quality')
+```
+
+### 描述三
+
+柠檬酸带来的风味可以给红葡萄酒加分，挥发性酸中的乙酸会带来刺鼻的醋味给葡萄酒减分。而图中显示，柠檬酸和挥发性酸呈现负相关，是不是存在一种影响因素可以在降低挥发性酸的同时增加柠檬酸？
+
+# 反思
+红葡萄酒品质数据集中缺乏像钻石数据集中的多个因子变量，因此不能以预想的方式从多个维度来进行分析，更多只能进行单、双变量分析。 
+
+在一步步的分析中，破除了我对总二氧化硫与硫酸盐的关系、柠檬酸与挥发性酸的关系的猜想，说明分析问题不能只靠直觉，而更应该靠可靠的数据分析。 
+
+考虑到这个数据集只有1599个观察值，且大部分都是中等品质的红葡萄酒，将来可以考虑加大数据量，特别是优质红酒的数据量。此外，葡萄酒的品质还与葡萄本身的种类和特点有关，将来可以考虑在数据集中加上此内容，以便更好的预测葡萄酒的品质。
